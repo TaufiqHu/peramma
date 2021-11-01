@@ -28,7 +28,7 @@ Route::get(
 Auth::routes();
 
 
-Route::get('/home', function(){
+Route::get('/home', function () {
     return redirect()->to(route('admin.dashboard'));
 })->name('home');
 
@@ -48,6 +48,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('data/bookcases', BookcaseController::class);
     Route::resource('data/classrooms', ClassRoomController::class);
     Route::resource('data/books', BookController::class);
+
+    Route::get('event/borrow/new', 'LendController@create')->name('lends.create');
+    Route::post('event/borrow', 'LendController@store')->name('lends.store');
+    Route::get('event/borrow', 'LendController@index')->name('lends.index');
+    Route::get('event/borrow/{lend}', 'LendController@show')->name('lends.show');
 
     Route::get('/setting', 'SettingController@index')->name('setting.index');
     Route::put('/setting', 'SettingController@update')->name('setting.update');

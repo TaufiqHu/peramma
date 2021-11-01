@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Lend;
+use App\Setting;
+use App\Student;
 use Illuminate\Http\Request;
 
 class LendController extends Controller
@@ -24,7 +27,12 @@ class LendController extends Controller
      */
     public function create()
     {
-        //
+        $data = array(
+            'title'     => 'Peminjaman Buku',
+            'setting'   => Setting::first(),
+        );
+
+        return view('admin.borrow.create', $data);
     }
 
     /**

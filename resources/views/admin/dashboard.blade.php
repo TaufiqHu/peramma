@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-Dashboard
+<p>Buku : {{ $bookCount }}</p>
+<p>Siswa: {{ $studentCount }}</p>
 @endsection

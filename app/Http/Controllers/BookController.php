@@ -69,8 +69,8 @@ class BookController extends Controller
     {
         $title = 'Edit Data Buku';
         $bookcases = Bookcase::all();
-        $bookTypes = BookType::all();
-        return view('admin.book.edit', compact('book', 'bookTypes', 'bookcases', 'title'));
+        $booktypes = BookType::all();
+        return view('admin.book.edit', compact('book', 'booktypes', 'bookcases', 'title'));
     }
 
     /**
@@ -105,29 +105,45 @@ class BookController extends Controller
         return redirect()->to(route('books.index'))->with(['success' => 'Data berhasil dihapus.']);
     }
 
-    private function validateInput($input, $student = null)
+    public function isbn($isbn)
     {
-        if ($student)
-            $isbnUniqueRule = $student->isbn == $input->isbn ? '' : '|unique:books,isbn';
+        $book = Book::where('isbn', $isbn)->first();
+        if ($book) {
+            return response()->json([
+                'status'    => true,
+                'data'      => $book
+            ], 200);
+        } else {
+            return response()->json([
+                'status'   => false,
+                'message'  => "Data Buku dengan ISBN: $isbn tidak ditemukan."
+            ], 200);
+        }
+    }
+
+    private function validateInput($input, $book = null)
+    {
+        $isbnUniqueRule = '';
+        if ($book)
+            $isbnUniqueRule = $book->isbn == $input->isbn ? '' : '|unique:books,isbn';
         $validatedInput = $input->validate(
             [
                 // Set the Rules for validation
-                'title'     => 'required',
-                'isbn'      => 'required|numeric' . $isbnUniqueRule,
-                'booktype'  => 'required|exists:book_types,id',
-                'bookcase'  => 'required|exists:bookcases,id',
-                'stock'     => 'required|numeric|min:1',
-                'publisher' => 'nullable',
-                'author'    => 'nullable',
-                'year'      => 'required|year',
-                'page_count' => 'required|numeric',
-                'condition' => 'nullable',
+                'title'         => 'required',
+                'isbn'          => 'required|numeric|digits:13' . $isbnUniqueRule,
+                'booktype'      => 'required|exists:book_types,id',
+                'bookcase'      => 'required|exists:bookcases,id',
+                'stock'         => 'required|numeric|min:1',
+                'publisher'     => 'nullable',
+                'author'        => 'nullable',
+                'year'          => 'required',
+                'page_count'    => 'required|numeric',
+                'condition'     => 'nullable',
             ],
             [
                 // Set Custom Validation Error Message
-                'title.required'     => ':attribute wajib diisi.',
-                'isbn.unique'        => ':attribute :input sudah ada, mohon periksa kembali data yang anda masukkan.',
-                'page_count.required'  => ':attribute wajib diisi.',
+                'required'     => ':attribute wajib diisi.',
+                'unique'        => ':attribute :input sudah ada, mohon periksa kembali data yang anda masukkan.',
             ],
             [
                 // Set Custom Attribute

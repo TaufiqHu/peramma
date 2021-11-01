@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('students', 'StudentController@nis')->name('api.students.prefix');
+Route::get('students/{student:nis}', 'StudentController@nis')->name('api.students.nis');
+
+Route::get('books', 'BookController@isbn')->name('api.books.prefix');
+Route::get('books/{book:isbn}', 'BookController@isbn')->name('api.books.isbn');
+
+// Route::post('students/get', 'StudentController@getAPI')->name('api.students.get');
+// Route::post('books/get', 'BookController@getAPI')->name('api.books.get');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

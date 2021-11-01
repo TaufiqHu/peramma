@@ -31,21 +31,21 @@
           <li class="nav-item nav-profile border-bottom"></li>
           <li class="nav-item pt-1">
             <a class="nav-link d-block" href="index.html">
-              <img class="sidebar-brand-logo" src="../assets/images/logo.svg" alt="" />
-              <img class="sidebar-brand-logomini" src="../assets/images/logo-mini.svg" alt="" />
+              <img class="sidebar-brand-logo" src="{{ asset('assets/images/logo.svg') }}" alt="" />
+              <img class="sidebar-brand-logomini" src="{{ asset('assets/images/logo-mini.svg') }}" alt="" />
             </a>
           </li>
           <li class="pt-2 pb-1">
             <span class="nav-item-head">Applications</span>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}">
               <i class="mdi mdi-apps menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/icons/mdi.html">
+            <a class="nav-link" href="{{ route('lends.create') }}">
               <i class="mdi mdi mdi-logout menu-icon"></i>
               <span class="menu-title">Peminjaman</span>
             </a>

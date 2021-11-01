@@ -2,6 +2,11 @@
 
 @section('css')
 <link rel="stylesheet" href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css">
+<style>
+  .break-word{
+    white-space: normal;
+  }
+</style>
 @endsection
 
 @section('js')
@@ -48,25 +53,19 @@
             <thead>
               <tr>
                 <th>#</th>
+                <th>Aksi</th>
                 <th>Judul</th>
                 <th>Penerbit</th>
                 <th>Jeisbn</th>
                 <th>Pengarang</th>
                 <th>Stok</th>
                 <th>Kondisi</th>
-                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
               @foreach ($books as $i => $book)
               <tr>
                 <td>{{$i+1}}</td>
-                <td>{{ $book->title }}<br/><small>ISBN: {{ $book->isbn }}</small></td>
-                <td>{{ $book->publisher }}<br/>({{ $book->published_year }})</td>
-                <td>{{ $book->bookType->name ?? 'Tidak Spesifik' }}<br/><small>Rak: {{ $book->bookcase->name }}</small></td>
-                <td>{{ $book->author }}<br/><small>{{ $book->page_count }} Halaman</small></td>
-                <td>{{ $book->stock }} buah</td>
-                <td>{{ $book->condition }}</td>
                 <td>
                   <a href="{{ route('books.show', ['book' => $book->id]) }}" class="btn btn-outline-primary btn-sm" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Print"><i class="mdi mdi-printer"></i></a>
                   <a href="{{ route('books.edit', ['book' => $book->id]) }}" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Edit"><i class="mdi mdi-pencil"></i></a>
@@ -76,6 +75,12 @@
                     <button class="btn btn-outline-danger btn-sm btn-delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="mdi mdi-delete"></i></button>
                   </form>
                 </td>
+                <td style="max-width: 450px"><strong class="m-0 break-word">{{ $book->title }}</strong><br><small>ISBN: {{ $book->isbn }}</small></td>
+                <td>{{ $book->publisher }}<br/>Tahun: {{ $book->published_year }}</td>
+                <td>{{ $book->bookType->name ?? 'Tidak Spesifik' }}<br/><small>Rak: {{ $book->bookcase->name }}</small></td>
+                <td>{{ $book->author }}<br/><small>{{ $book->page_count }} Halaman</small></td>
+                <td>{{ $book->stock }} buah</td>
+                <td>{{ $book->condition }}</td>
               </tr>
               
               @endforeach

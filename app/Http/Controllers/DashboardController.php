@@ -9,15 +9,16 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $data = array(
+            'title'             => 'Dashboard',
             'bookCount' => (int)Book::sum('stock'),
             'studentCount' => Student::count(),
             'ClassRoomCount' => ClassRoom::count(),
-            
-        );
-        dd($data);
 
-        return view('admin.dashboard');
+        );
+
+        return view('admin.dashboard', $data);
     }
 }

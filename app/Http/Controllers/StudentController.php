@@ -90,6 +90,30 @@ class StudentController extends Controller
         return redirect()->to(route('student-index'))->with(['success' => 'Data berhasil dihapus.']);
     }
 
+    /**
+     * Get Student Data format JSON Response
+     */
+    public function getAPI(Request $request)
+    {
+    }
+
+    public function nis($student)
+    {
+        $nis = $student;
+        $student = Student::where('nis', $nis)->first();
+        if ($student) {
+            return response()->json([
+                'status'    => true,
+                'data'      => $student
+            ], 200);
+        } else {
+            return response()->json([
+                'status'   => false,
+                'message'  => "Data Anggota dengan NIS: $nis tidak ditemukan."
+            ], 200);
+        }
+    }
+
     private function validateInput($input, $student = null)
     {
 

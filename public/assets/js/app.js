@@ -2,11 +2,13 @@ $(document).ready(function() {
     $(".numberonly").keydown(function(event) {
         // 46 for delete
         // 8 for backspace
+        // 13 for Enter
         // 48-57 for 0-9 numbers
         // 9 for tab
         // 37, 39 left and right arrow
         if (
             event.keyCode == 46 ||
+            event.keyCode == 13 ||
             event.keyCode == 9 ||
             event.keyCode == 37 ||
             event.keyCode == 39 ||
