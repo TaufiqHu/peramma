@@ -64,7 +64,7 @@
                 </tr>
                 <tr>
                   <td colspan="4" style="text-align: center;padding: 0px 5px;">
-                    <hr style="margin-top: 0px;border-top: 2px solid;"/>
+                    <hr style="margin-top: 0px;border-top: 2px solid;margin-bottom:5px"/>
                   </td>
                 </tr>
                 <tr>
@@ -104,7 +104,8 @@
                 </tr>
                 <tr>
                   <td colspan="4" class="text-center py-2 barcode">
-                    {!! DNS1D::getBarcodeHTML($student->nis, 'C128',2,30) !!}
+                    <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($student->nis, 'C128', 2,40)}}" alt="barcode"   />
+                    {{-- {!! DNS1D::getBarcodeHTML($student->nis, 'C128',2,30) !!} --}}
                   </td>
                 </tr>
               </tbody>

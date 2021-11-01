@@ -48,20 +48,21 @@
 </head>
 <body>
   <div class="container-scroller">
-    <table class="text-center" style="border: 1px solid;width:50mm;height:20mm;">
+    <table class="text-center" style="border: 1px solid;width:100mm;height:40mm;">
       <tbody>
         <tr>
           <td class="pt-1">
-            <strong>{{ $book->title }}</strong>
+            <strong style="font-size: 20px">{{ $book->title }}</strong>
           </td>
         </tr>
         <tr>
-          <td style="vertical-align: bottom">
-            <div class="barcode">{!! DNS1D::getBarcodeHTML($book->isbn, 'C128',1,30) !!}</div>
+          <td style="vertical-align: bottom;padding-left:3px">
+            <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($book->isbn, 'C128', 2,60)}}" alt="barcode"   />
+            {{-- <div class="barcode">{!! DNS1D::getBarcodeHTML($book->isbn, 'C128',2,60) !!}</div> --}}
           </td>
         </tr>
         <tr>
-          <td  style="vertical-align: top">{{ $book->isbn }}</td>
+          <td  style="vertical-align: top;font-size:18px">{{ $book->isbn }}</td>
         </tr>
       </tbody>
     </table>
