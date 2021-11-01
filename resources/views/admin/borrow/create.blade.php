@@ -20,13 +20,20 @@
     let studentInputFocus = false;
     let bookInputFocus = false;
     let selectedBook = [];
+    let selectedStudent = null;
 
     $('button#student-edit').on('click', function(){
       $('#student-show').hide();
       $('#student-input').show();
       $('#nis').select();
+      setStudent(null);
       studentInputFocus = true;
     });
+
+    function setStudent(value){
+      selectedStudent = value;
+      $('input#student').val(value);
+    }
     
     function formatDate(stringDate){
       let dates = stringDate.split('-');
@@ -51,6 +58,7 @@
             $('#student-show').show();
             $('#student-input').hide();
             $('#isbn').focus().select();
+            setStudent(student.id);
           }else{
             $('#student-nis-info').html(resp.message).show();
           }
@@ -61,9 +69,11 @@
     }
 
     function setInputBook(){
-      selectedBook.each((bookId) => {
-        console.log(bookId);
+      bookContent = ``;
+      selectedBook.forEach((bookId) => {
+        bookContent += `<input type="hidden" name="books[]" value="${bookId}" />`;
       })
+      $('#input-books').html(bookContent)
     }
 
     function addBook(book){
@@ -79,7 +89,6 @@
       selectedBook.push(book.id)
       let content = `<tr><td><button class="btn btn-danger btn-sm delete-book" data-id="${book.id}"><i class="mdi mdi-window-close"></i></button></td><td><strong>${book.title}</strong><br>ISBN: ${book.isbn}</td><td><strong>${book.publisher}</strong><br>Tahun: ${book.published_year}</td></tr>`;
       $('#book-row').append(content);
-      console.log(selectedBook);
       setInputBook()
     }
 
@@ -94,7 +103,7 @@
             let book = resp.data;
             // add book
             addBook(book);
-            $('input#isbn').select();
+            $('input#isbn').val('').focus();
           }else{
             $('#book-isbn-info').html(resp.message).show();
           }
@@ -107,7 +116,6 @@
     $('input#nis').on('keypress', function(e){
       let nis = $(this).val();
       if(e.keyCode == 13){
-        console.log('ENTER');
         getStudent(nis)
       }else if(nis.length == 10){
         getStudent(nis)
@@ -117,7 +125,6 @@
     $('input#isbn').on('keypress', function(e){
       let isbn = $(this).val();
       if(e.keyCode == 13){
-        console.log('ENTER');
         getBook(isbn)
       }else if(isbn.length == 13){
         getBook(isbn)
@@ -138,6 +145,18 @@
         }
         setInputBook()
       })
+    })
+
+    $('button#submit-button').on('click', function(e){
+      e.preventDefault();
+      let submitBtn = $(this);
+      if(selectedStudent == null){
+        alert('Anda belum memasukkan data peminjam!')
+      }else if(selectedBook.length == 0){
+        alert('Anda belum memasukkan buku yang akan dipinjam!')
+      }else if(confirm('Pengajuan peminjaman akan disimpan. Lanjutkan?')){
+        submitBtn.closest('form').submit();
+      }
     })
 
     $('#nis').focus();
@@ -211,10 +230,8 @@
       <form action="{{ route('lends.store') }}" method="post">
         @csrf
         <input type="hidden" name="student" id="student" required>
-        <div class="hidden" id="input-books">
-
-        </div>
-        <button type="submit" class="m-4 btn btn-primary mr-2"> SUBMIT </button>
+        <div class="hidden" id="input-books"></div>
+        <button type="submit" class="m-4 btn btn-primary mr-2" id="submit-button"> SUBMIT </button>
       </form>
     </div>
   </div>
